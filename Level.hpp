@@ -8,14 +8,15 @@
  */
 class Level
 {
+private:
+	int level;
+	int roomCount;
+    Room* rooms[10];
+
 public:
+	// Generates random rooms and links them via portal
 	Level();
 	~Level();
 
-	Map* activeMap;
-
-private:
-	int level;
-	int mapCount;
-	Map* maps[10];
+	Room* activeRoom;
 };

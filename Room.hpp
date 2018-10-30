@@ -2,6 +2,17 @@
 
 #include <vector>
 
+// TILE VALUES DEFINED BELOW
+#define AIR 0
+#define GROUND 1
+#define WALL 2
+#define PLAYER 3
+#define STAIR 4
+// portals:  100-199
+// powerups: 200-299
+// enemies:  300-399
+
+
 /**
  * A room is a part of the level. Rooms are linked together by portals.
  * A portal is given by a tile numbered 100-199, where linked rooms
@@ -16,8 +27,13 @@ private:
 	std::vector<std::vector<int>> tiles;
 
 public:
-	Map();
-	~Map();
+	Room();
+	~Room();
+
+	void InsertTileOnGround(int type);
+	
+	bool IsGroundType(int x, int y);
+	bool HasPortal();
 
 	void GenerateMap(int width, int height);
 };
