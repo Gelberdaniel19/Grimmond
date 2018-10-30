@@ -5,7 +5,7 @@ Written in C++ with SDL for graphics
 ## TODO (Logic)
 - [x] Working entity component system
 - [x] Transform Component
-- [ ] Collision Component
+- [ ] Hitbox Component
 - [ ] Procedural room generation algorithm (Not under EntityManager, but own class?)
 - [ ] Procedural level:
   - [ ] Many rooms linked by portals
@@ -13,7 +13,9 @@ Written in C++ with SDL for graphics
   - [ ] A path to the stairs from the player is created with portals
   - [ ] All unlinked rooms are connected to the main link somehow
   - [ ] If the amount of links is less than the amount of rooms+1, add more
+- [ ] Collision
 - [ ] PlayerStats Component
+- [ ] Camera
 - [ ] Game loop
 - [ ] KeyboardControl Component
 - [ ] Sprite Component

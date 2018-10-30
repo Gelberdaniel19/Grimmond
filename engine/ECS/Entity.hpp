@@ -62,7 +62,7 @@ class Entity
 	}
 
 	/**
-	 * Gets a component of the specified type. If the entity does
+	 * Gets the first component of the specified type. If the entity does
 	 * not have one, returns a nullptr.
 	 */
 	template <typename T>

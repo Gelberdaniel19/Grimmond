@@ -1,6 +1,6 @@
 #include "Components.hpp"
 #include "Entity.hpp"
-#include "EntityManager.hpp"
+#include "Scene.hpp"
 
 #include <iostream>
 #include <string>
