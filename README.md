@@ -5,7 +5,7 @@ Written in C++ with SDL for graphics
 ## TODO (Logic)
 - [x] Working entity component system
 - [x] Transform Component
-- [ ] Hitbox Component
+- [x] Hitbox Component
 - [ ] Procedural room generation algorithm (Not under EntityManager, but own class?)
 - [ ] Procedural level:
   - [ ] Many rooms linked by portals
