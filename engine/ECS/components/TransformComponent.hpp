@@ -4,7 +4,7 @@
 
 class TransformComponent : public Component
 {
- public:
+public:
 	Vector2D position;
 	Vector2D velocity;
 	Rectangle rectangle;

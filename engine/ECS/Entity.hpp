@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 #include "../geometry/Rectangle.hpp"
 #include "../geometry/Vector2D.hpp"
 
@@ -75,8 +76,5 @@ class Entity
 		}
 		return nullptr;
 	}
-
-	Entity() {}
-	~Entity() {}
 };
 

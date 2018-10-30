@@ -6,7 +6,7 @@
 /**
  * This class holds and operates on every entity in the game.
  */
-class EntityManager
+class Scene
 {
  private:
 	std::vector<Entity*> entities;
