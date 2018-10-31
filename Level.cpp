@@ -1,62 +1,73 @@
-#inlude "Level.hpp"
+#include "Level.hpp"
 
 Level::Level()
-{
-	// TODO Generate random number 6-10
-	int roomCount = 8;
+{	
+	// Seed the rng
+	rng.seed(std::random_device()());
+	
+	// Make 6-10 rooms
+	std::uniform_int_distribution<std::mt19937::result_type> randRoomCount(6, 10);
+	int roomCount = randRoomCount(rng);
+	std::uniform_int_distribution<std::mt19937::result_type> randRoomPicker(0, roomCount-1);
 	for (int i = 0; i < roomCount; i++)
-		rooms[i] = new Room();
+		rooms[i] = new Room(4, 4);
 
-	// Put player and stairs in random room
-	int playerRoom = 0;
-	int stairsRoom = 8;
+	// Put player and stairs in random different rooms
+	int playerRoom = randRoomPicker(rng);
+	int stairsRoom = randRoomPicker(rng);
+	while (stairsRoom == playerRoom)
+		stairsRoom = randRoomPicker(rng);
 	rooms[playerRoom]->InsertTileOnGround(PLAYER);
 	rooms[stairsRoom]->InsertTileOnGround(STAIR);
-
-	// Generate linked portals to make a path to the stair
+		
+	// Generate linked portals to make a path to the stairs
 	int portalnum = 100;
 	int prevRoom = playerRoom;
 	do {
-		// TODO Pick random room
-		int randRoom = 1;
+		// Pick a random new room
+		int randRoom = randRoomPicker(rng);
+		while (rooms[randRoom]->HasPortal() || randRoom == prevRoom)
+			randRoom = randRoomPicker(rng);
+
+		// Link them with a portal
 		rooms[prevRoom]->InsertTileOnGround(portalnum);
 		rooms[randRoom]->InsertTileOnGround(portalnum);
-
-		prevRoom = randRoom;
 		portalnum++;
-		if (portalnum > 200)
-			break;
-	} while (!rooms[randRoom]->HasPortal());
-
-	// Ensure every room is linked to the rooms on the path to stair
-	for (Room* r : rooms) {
-		if (!r->HasPortal()) {
-			// TODO Pick random room until one has a portal
-			int randRoom;
-			do {
-				randRoom = 1;
-			} while (!rooms[randRoom]->HasPortal());
+		prevRoom = randRoom;
+	} while (prevRoom != stairsRoom);
+	
+	// Ensure every room is linked to the rooms on the path to stairs
+	for (int i = 0; i < roomCount; i++) {
+		if (!rooms[i]->HasPortal()) {
+			// Pick random room until one has a portal
+			int randRoom = randRoomPicker(rng);
+			while (!rooms[randRoom]->HasPortal())
+				randRoom = randRoomPicker(rng);
 
 			// Link the rooms
-			r->InsertTileOnGround(portalnum);
+			rooms[i]->InsertTileOnGround(portalnum);
 			rooms[randRoom]->InsertTileOnGround(portalnum);
 			portalnum++;
 		}
 	}
-
+	
 	// If the number of links is less than roomCount + 1, keep adding random links
 	while (portalnum - 100 < roomCount + 1) {
 		// Pick two random, DIFFERENT rooms
-		int room1 = 1;
-		int room2;
-		do {
-			room2 = 2;
-		} while (room1 == room2);
+		int room1 = randRoomPicker(rng);
+		int room2 = randRoomPicker(rng);
+		while (room2 == room1)
+			room2 = randRoomPicker(rng);
 
 		// Link em
 		rooms[room1]->InsertTileOnGround(portalnum);
 		rooms[room2]->InsertTileOnGround(portalnum);
 		portalnum++;
+	}
+
+	for (int i = 0; i < roomCount; i++) {
+		rooms[i]->DrawToConsole();
+		std::cout << "\n\n" << std::endl;
 	}
 }
 

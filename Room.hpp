@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <random>
+#include <iostream>
 
 // TILE VALUES DEFINED BELOW
 #define AIR 0
@@ -25,10 +27,10 @@ class Room
 {
 private:
 	std::vector<std::vector<int>> tiles;
-
+	std::mt19937 rng;
+	
 public:
-	Room();
-	~Room();
+	Room(int width, int height);
 
 	void InsertTileOnGround(int type);
 	
@@ -36,4 +38,5 @@ public:
 	bool HasPortal();
 
 	void GenerateMap(int width, int height);
+	void DrawToConsole();
 };
