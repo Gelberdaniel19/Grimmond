@@ -28,6 +28,11 @@ class Room
 private:
 	std::vector<std::vector<int>> tiles;
 	std::mt19937 rng;
+
+	void CarveSquare();
+	void AddWalls(int x, int y);
+	void FlagGroundFromTile(std::vector<std::vector<int>>* vec, int x, int y);
+	bool AllAccessible(std::vector<std::vector<int>> vec);
 	
 public:
 	Room(int width, int height);

@@ -10,7 +10,7 @@ Level::Level()
 	int roomCount = randRoomCount(rng);
 	std::uniform_int_distribution<std::mt19937::result_type> randRoomPicker(0, roomCount-1);
 	for (int i = 0; i < roomCount; i++)
-		rooms[i] = new Room(4, 4);
+		rooms[i] = new Room(20, 20);
 
 	// Put player and stairs in random different rooms
 	int playerRoom = randRoomPicker(rng);

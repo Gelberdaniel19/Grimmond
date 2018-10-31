@@ -6,13 +6,14 @@ Written in C++ with SDL for graphics
 - [x] Working entity component system
 - [x] Transform Component
 - [x] Hitbox Component
-- [ ] Procedural level:
-  - [ ] Generation algorithm for Rooms
+- [x] Procedural level:
+  - [x] Generation algorithm for Rooms
   - [x] Many rooms linked by portals
   - [x] Player spawns randomly, stairs to next level spawns randomly
   - [x] A path to the stairs from the player is created with portals
   - [x] All unlinked rooms are connected to the main link somehow
   - [x] If the amount of links is less than the amount of rooms+1, add more
+- [ ] Tile component
 - [ ] Collision
 - [ ] PlayerStats Component
 - [ ] Camera
