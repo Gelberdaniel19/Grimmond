@@ -55,7 +55,7 @@ class Entity
 	 * type exists, return false. Otherwise, return true.
 	 */
 	template <typename T>
-	bool addComponent(T* component)
+	bool AddComponent(T* component)
 	{
 		components.emplace_back(component);
 		component->Init();
@@ -67,7 +67,7 @@ class Entity
 	 * not have one, returns a nullptr.
 	 */
 	template <typename T>
-	T* getComponent()
+	T* GetComponent()
 	{
 		for (Component* c : components) {
 			T* t = dynamic_cast<T*>(c);
