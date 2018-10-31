@@ -11,7 +11,9 @@ int main()
 	// Create manager and player
 	Scene manager;
 	Entity player;
+	player.name = "Wazard";
 	Entity wall;
+	wall.name = "a wall";
 	manager.AddEntity(&player);
 	manager.AddEntity(&wall);
 

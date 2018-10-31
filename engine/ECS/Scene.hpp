@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
 #include "Entity.hpp"
 #include "Collision.hpp"
 
@@ -13,14 +14,17 @@ class Scene
 	std::vector<Entity*> entities;
 
  public:
-	void Update() {
+	void Update()
+	{
 		for (Entity* e : entities) e->Update();
 		for (Entity* e1 : entities)
 			for (Entity* e2 : entities)
 				if (e1 != e2 && Collision::AABB(e1, e2))
-					std::cout << "collision" << std::endl;
+					std::cout << e1->name << " hit " << e2->name << std::endl;
 	}
+	
 	void Render() { for (Entity* e : entities) e->Render(); }
+
 	void Refresh()
 	{
 		for (int i = 0; i < entities.size(); i++) {

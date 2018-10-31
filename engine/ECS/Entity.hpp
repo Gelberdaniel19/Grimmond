@@ -40,16 +40,18 @@ public:
  */
 class Entity
 {
- private:
+private:
 	bool active = true;
 	std::vector<Component*> components;
 
- public:	
+public:
+	std::string name;
+	
 	void Update() { for (Component* c : components) c->Update(); }
 	void Render() { for (Component* c : components) c->Render(); }
 	bool isActive() { return active; }
 	void destroy() { active = false; }
-
+	
 	/**
 	 * Adds a component to the entity. If a component of the same
 	 * type exists, return false. Otherwise, return true.
