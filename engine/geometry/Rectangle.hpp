@@ -7,48 +7,35 @@
  */
 class Rectangle
 {
-private:
-	float width, height;
-	Vector2D position;
-
 public:
+	float x, y, w, h;
+	
 	Rectangle() {
-		width = height = 0;
-		position.set(0, 0);
+		x = y = w = h = 0;
 	}
 	
-	Rectangle(float w, float h)
+	Rectangle(float width, float height)
 	{
-		width = w;
-		height = h;
-		position.set(0, 0);
+		w = width
+		h = height;
+		x = y = 0;
 	}
 	
-	Rectangle(float x, float y, float w, float h)
+	Rectangle(float xPos, float yPos, float width, float height)
 	{
-		width = w;
-		height = h;
-		position.set(x, y);
+		x = xPos;
+		y = yPos;
+		w = width;
+		h = height;	  
 	}
 
 	~Rectangle() { }
 	
 	void Equals(Rectangle rect)
 	{
-		width = rect.width;
-		height = rect.height;
-		position.Equals(rect.position);
+		w = rect.w;
+		h = rect.h;
+		x = rect.x;
+		y = rect.y;
 	}
-
-	float x() { return position.x(); }
-	float y() { return position.y(); }
-	float w() { return width; }
-	float h() { return height; }
-	Vector2D pos() { return position; }
-	
-	void x(float x) { position.x(x); }
-	void y(float y) { position.y(y); }
-	void w(float w) { width = w; }
-	void h(float h) { height = h; }
-	void pos(Vector2D pos) { position = pos; }
 };
