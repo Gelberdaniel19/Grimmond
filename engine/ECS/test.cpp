@@ -30,6 +30,7 @@ int main()
 	
 	// Hitbox testing
     HitboxComponent hc1(&player);
+	hc1.offset.Set(2, 2);
 	HitboxComponent hc2(&wall);
 	player.AddComponent<HitboxComponent>(&hc1);
 	wall.AddComponent<HitboxComponent>(&hc2);
