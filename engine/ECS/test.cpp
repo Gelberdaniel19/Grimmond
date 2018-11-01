@@ -33,7 +33,7 @@ int main()
 	hc1.offset.Set(2, 2);
 	HitboxComponent hc2(&wall);
 	player.AddComponent<HitboxComponent>(&hc1);
-	wall.AddComponent<HitboxComponent>(&hc2);
+	//wall.AddComponent<HitboxComponent>(&hc2);
 
 	cout << "wall at: " << wall.GetComponent<TransformComponent>()->position.x << ","
 		 << wall.GetComponent<TransformComponent>()->position.y << endl;	
