@@ -16,7 +16,7 @@ public:
 	
 	Rectangle(float width, float height)
 	{
-		w = width
+		w = width;
 		h = height;
 		x = y = 0;
 	}
@@ -37,5 +37,11 @@ public:
 		h = rect.h;
 		x = rect.x;
 		y = rect.y;
+	}
+
+	void SetSize(float width, float height)
+	{
+		w = width;
+		h = height;
 	}
 };

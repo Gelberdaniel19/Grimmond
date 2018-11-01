@@ -19,8 +19,10 @@ class Scene
 		for (Entity* e : entities) e->Update();
 		for (Entity* e1 : entities)
 			for (Entity* e2 : entities)
-				if (e1 != e2 && Collision::AABB(e1, e2))
-					std::cout << e1->name << " hit " << e2->name << std::endl;
+				if (e1 != e2 && Collision::AABB(e1, e2)) {
+					//std::cout << e1->name << " hit " << e2->name << std::endl;
+					e1->GetComponent<HitboxComponent>()->ProcessCollision(e2);
+				}
 	}
 	
 	void Render() { for (Entity* e : entities) e->Render(); }

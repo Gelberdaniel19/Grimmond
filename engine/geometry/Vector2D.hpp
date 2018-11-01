@@ -16,7 +16,7 @@ public:
 	void Divide(Vector2D vec);
 	void Equals(Vector2D vec);
 
-	void set(float x, float y);
+	void Set(float x, float y);
 };
 
 Vector2D::Vector2D()
@@ -64,4 +64,10 @@ void Vector2D::Equals(Vector2D vec)
 {
 	x = vec.x;
 	y = vec.y;
+}
+
+void Vector2D::Set(float xPos, float yPos)
+{
+	x = xPos;
+	y = yPos;
 }

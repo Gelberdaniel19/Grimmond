@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entity.hpp"
+#include "Components.hpp"
 
 class Collision
 {
@@ -17,9 +18,14 @@ public:
 		Rectangle r1 = h1->hitbox;
 		Rectangle r2 = h2->hitbox;
 
-		return ((r1.x() < r2.x() + r2.w()) &&
-				(r1.x() + r1.w() > r2.x()) &&
-				(r1.y() < r2.y() + r2.h()) &&
-				(r1.y() + r1.h() > r2.y()));
+		return AABB(r1, r2);
+	}
+
+	static bool AABB(Rectangle r1, Rectangle r2)
+	{
+		return ((r1.x < r2.x + r2.w) &&
+                (r1.x + r1.w > r2.x) &&
+                (r1.y < r2.y + r2.h) &&
+                (r1.y + r1.h > r2.y));
 	}
 };
