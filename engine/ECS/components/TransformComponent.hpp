@@ -10,36 +10,49 @@ public:
 	Rectangle rectangle;
 	float speed = 1;
 	
-	TransformComponent() {}
-
-	TransformComponent(Rectangle rect)
+	TransformComponent(Entity* e)
 	{
+		entity = e;
+	}
+
+	TransformComponent(Entity* e, Rectangle rect)
+	{
+		entity = e;
 		rectangle.Equals(rect);
 	}
 	
-	TransformComponent(Vector2D pos)
+	TransformComponent(Entity* e, Vector2D pos)
 	{
+		entity = e;
 		position.Equals(pos);
 	}
 
-	TransformComponent(Vector2D pos, Vector2D vel, float sp)
+	TransformComponent(Entity* e, Vector2D pos, Vector2D vel, float sp)
 	{
+		entity = e;
 		position.Equals(pos);
 		velocity.Equals(vel);
 		speed = sp;
 	}
 
-	TransformComponent(Vector2D pos, Rectangle rect)
+	TransformComponent(Entity* e, Vector2D pos, Rectangle rect)
 	{
+		entity = e;
 		position.Equals(pos);
 		rectangle.Equals(rect);
 	}
 
-	TransformComponent(Vector2D pos, Vector2D vel, float sp, Rectangle rect)
+	TransformComponent(Entity* e, Vector2D pos, Vector2D vel, float sp, Rectangle rect)
 	{
+		entity = e;
 		position.Equals(pos);
 		velocity.Equals(vel);
 		speed = sp;
 		rectangle.Equals(rect);
+	}
+
+	void Update()
+	{
+		position.Add(velocity);
 	}
 };
