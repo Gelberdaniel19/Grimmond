@@ -95,7 +95,6 @@ void Room::GenerateMap(int width, int height)
 {
 	// Generate two random points. If their x and y difference is more than 2,
 	// make them into a square of ground. Repeat the process between 3 and 7 times.
-
 	std::mt19937 rng;
 	rng.seed(std::random_device()());
 	std::uniform_int_distribution<std::mt19937::result_type> distSquares(4, 8);
@@ -116,7 +115,8 @@ void Room::GenerateMap(int width, int height)
 	bool found = false;
 	for (startX = 2; startX < tiles.size()-2 && !found; startX++)
 		for (startY = 2; startY < tiles[0].size()-2 && !found; startY++)
-			found = true;
+			if (tiles[startX][startY] == 1)
+				found = true;
 	// Then add the walls
 	AddWalls(startX, startY);
 	// Finally change flagged tiles back to ground tiles
