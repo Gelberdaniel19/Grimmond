@@ -12,6 +12,7 @@
 #define WALL 2
 #define PLAYER 3
 #define STAIR 4
+#define FLAG 5
 // portals:  100-199
 // powerups: 200-299
 // enemies:  300-399
