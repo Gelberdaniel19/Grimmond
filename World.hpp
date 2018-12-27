@@ -9,10 +9,16 @@ private:
 
 public:
     World();
+    ~World();
 };
 
 
 World::World()
 {
     activeLevel = new Level(this);
+}
+
+World::~World()
+{
+    delete activeLevel;
 }

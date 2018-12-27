@@ -13,7 +13,7 @@ private:
 	World* world;
 	int level;
 	int roomCount;
-    Room* rooms[10];
+    std::vector<Room*> rooms;
 
 	std::mt19937 rng;
 
