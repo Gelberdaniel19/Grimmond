@@ -13,8 +13,8 @@ private:
 	World* world;
 	int level;
 	int roomCount;
-    std::vector<Room*> rooms;
-
+	Room* activeRoom;
+	std::vector<Room*> rooms;
 	std::mt19937 rng;
 
 public:
@@ -22,5 +22,5 @@ public:
 	Level(World* world);
 	~Level();
 
-	Room* activeRoom;
+	Room* GetDestRoom(Room* src, int portalnum);
 };

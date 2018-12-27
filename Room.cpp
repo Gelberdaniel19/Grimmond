@@ -1,10 +1,11 @@
 #include "Room.hpp"
 #include <random>
 
-Room::Room(int width, int height)
+Room::Room(Level* p, int width, int height)
 {
+	parent = p;
 	rng.seed(std::random_device()());
-	
+
 	// Init map
 	for (int i = 0; i < width; i++)
 		tiles.push_back(std::vector<int>(height, 0));
@@ -17,7 +18,7 @@ void Room::CarveSquare()
 	rng.seed(std::random_device()());
 	std::uniform_int_distribution<std::mt19937::result_type> distRoomX(2, tiles.size()-3);
 	std::uniform_int_distribution<std::mt19937::result_type> distRoomY(2, tiles[0].size()-3);
-	
+
 	// Make a box
 	int x1, x2, y1, y2;
 	do {
@@ -100,7 +101,7 @@ void Room::GenerateMap(int width, int height)
 	std::uniform_int_distribution<std::mt19937::result_type> distSquares(4, 8);
 	std::uniform_int_distribution<std::mt19937::result_type> distRoomX(2, width-3);
 	std::uniform_int_distribution<std::mt19937::result_type> distRoomY(2, height-3);
-	
+
 	// Carve squares of ground
 	int squares = distSquares(rng);
 	for (int i = 0; i < squares; i++) CarveSquare();
@@ -153,7 +154,7 @@ void Room::InsertTileOnGround(int type)
 {
 	std::uniform_int_distribution<std::mt19937::result_type> randX(0, tiles.size()-1);
 	std::uniform_int_distribution<std::mt19937::result_type> randY(0, tiles[0].size()-1);
-	
+
 	int x, y;
 	do {
 		x = randX(rng);
@@ -185,4 +186,14 @@ void Room::DrawToConsole()
 		}
 		std::cout << std::endl;
 	}
+}
+
+std::vector<std::vector<int>> Room::GetTiles()
+{
+	return tiles;
+}
+
+Level* Room::GetParent()
+{
+	return parent;
 }

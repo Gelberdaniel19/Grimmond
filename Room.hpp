@@ -14,6 +14,7 @@
 // powerups: 200-299
 // enemies:  300-399
 
+class Level;
 
 /**
  * A room is a part of the level. Rooms are linked together by portals.
@@ -21,27 +22,31 @@
  * will share one tile of a unique number 100-199. 200 represents the
  * stairs, bringing the player to the next level. 201 represents the
  * player's spawn. The stairs spawn in one room, and the player spawns
- * in one room, at random. 
+ * in one room, at random.
  */
 class Room
 {
 private:
 	std::vector<std::vector<int>> tiles;
 	std::mt19937 rng;
+	Level* parent;
 
 	void CarveSquare();
 	void AddWalls(int x, int y);
 	void FlagGroundFromTile(std::vector<std::vector<int>>* vec, int x, int y);
 	bool AllAccessible(std::vector<std::vector<int>> vec);
-	
+
 public:
-	Room(int width, int height);
+	Room(Level* parent, int width, int height);
+	Level* GetParent();
 
 	void InsertTileOnGround(int type);
-	
+
 	bool IsGroundType(int x, int y);
 	bool HasPortal();
 
 	void GenerateMap(int width, int height);
 	void DrawToConsole();
+
+	std::vector<std::vector<int>> GetTiles();
 };

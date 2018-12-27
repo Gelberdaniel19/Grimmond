@@ -1,5 +1,20 @@
 #include "Level.hpp"
 
+Room* Level::GetDestRoom(Room* src, int portalnum)
+{
+	for (Room* room : rooms) {
+		if (src == room) continue;
+
+		std::vector<std::vector<int>> tiles = room->GetTiles();
+		for (int row = 0; row < tiles.size(); row++)
+			for (int col = 0; col < tiles[0].size(); col++)
+				if (tiles[row][col] == portalnum)
+					return room;
+	}
+
+	return nullptr;
+}
+
 Level::Level(World* w)
 {
 	world = w;
@@ -12,7 +27,7 @@ Level::Level(World* w)
 	int roomCount = randRoomCount(rng);
 	std::uniform_int_distribution<std::mt19937::result_type> randRoomPicker(0, roomCount-1);
 	for (int i = 0; i < roomCount; i++)
-		rooms.emplace_back(new Room(20, 20));
+		rooms.emplace_back(new Room(this, 20, 20));
 
 	// Put player and stairs in random different rooms
 	int playerRoom = randRoomPicker(rng);
@@ -21,6 +36,7 @@ Level::Level(World* w)
 		stairsRoom = randRoomPicker(rng);
 	rooms[playerRoom]->InsertTileOnGround(PLAYER);
 	rooms[stairsRoom]->InsertTileOnGround(STAIR);
+	activeRoom = rooms[playerRoom];
 
 	// Generate linked portals to make a path to the stairs
 	int portalnum = 100;
@@ -67,14 +83,12 @@ Level::Level(World* w)
 		portalnum++;
 	}
 
-	for (int i = 0; i < roomCount; i++) {
-		rooms[i]->DrawToConsole();
-		std::cout << "\n\n" << std::endl;
-	}
+	// DELETE THIS REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+	GetDestRoom(activeRoom, 100)->DrawToConsole();
 }
 
 Level::~Level()
 {
-	for (int i = 0; i < 10; i++)
-		delete rooms[i];
+	for (Room* r : rooms)
+		delete r;
 }
