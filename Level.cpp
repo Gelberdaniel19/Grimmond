@@ -1,10 +1,12 @@
 #include "Level.hpp"
 
-Level::Level()
-{	
+Level::Level(World* w)
+{
+	world = w;
+
 	// Seed the rng
 	rng.seed(std::random_device()());
-	
+
 	// Make 6-10 rooms
 	std::uniform_int_distribution<std::mt19937::result_type> randRoomCount(6, 10);
 	int roomCount = randRoomCount(rng);
@@ -19,7 +21,7 @@ Level::Level()
 		stairsRoom = randRoomPicker(rng);
 	rooms[playerRoom]->InsertTileOnGround(PLAYER);
 	rooms[stairsRoom]->InsertTileOnGround(STAIR);
-		
+
 	// Generate linked portals to make a path to the stairs
 	int portalnum = 100;
 	int prevRoom = playerRoom;
@@ -35,7 +37,7 @@ Level::Level()
 		portalnum++;
 		prevRoom = randRoom;
 	} while (prevRoom != stairsRoom);
-	
+
 	// Ensure every room is linked to the rooms on the path to stairs
 	for (int i = 0; i < roomCount; i++) {
 		if (!rooms[i]->HasPortal()) {
@@ -50,7 +52,7 @@ Level::Level()
 			portalnum++;
 		}
 	}
-	
+
 	// If the number of links is less than roomCount + 1, keep adding random links
 	while (portalnum - 100 < roomCount + 1) {
 		// Pick two random, DIFFERENT rooms

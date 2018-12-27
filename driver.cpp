@@ -1,9 +1,10 @@
 #include "Room.hpp"
 #include "Level.hpp"
+#include "World.hpp"
 
 int main()
 {
-	Level level;
-	
+	World world;
+
 	return 0;
 }
