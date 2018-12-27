@@ -87,7 +87,7 @@ Level::Level(World* w)
 void Level::Start()
 {
 	std::cout << "Entering Level" << std::endl;
-	while (!complete) {
+	while (!complete && running) {
 		std::cout << "Entering Room" << std::endl;
 		activeRoom->Play();
 		std::cout << "Exiting Room" << std::endl;
