@@ -16,6 +16,7 @@ public:
 World::World()
 {
     activeLevel = new Level(this);
+    activeLevel->Start();
 }
 
 World::~World()

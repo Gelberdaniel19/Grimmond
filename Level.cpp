@@ -82,9 +82,17 @@ Level::Level(World* w)
 		rooms[room2]->InsertTileOnGround(portalnum);
 		portalnum++;
 	}
+}
 
-	// DELETE THIS REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-	GetDestRoom(activeRoom, 100)->DrawToConsole();
+void Level::Start()
+{
+	std::cout << "Entering Level" << std::endl;
+	while (!complete) {
+		std::cout << "Entering Room" << std::endl;
+		activeRoom->Play();
+		std::cout << "Exiting Room" << std::endl;
+	}
+	std::cout << "Exiting Level" << std::endl;
 }
 
 Level::~Level()

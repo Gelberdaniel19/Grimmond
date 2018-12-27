@@ -1,5 +1,10 @@
 #include "Room.hpp"
-#include <random>
+
+void Room::Play()
+{
+	AutoManager manager(new EntityManager);
+	parent->complete = true;
+}
 
 Room::Room(Level* p, int width, int height)
 {
@@ -191,9 +196,4 @@ void Room::DrawToConsole()
 std::vector<std::vector<int>> Room::GetTiles()
 {
 	return tiles;
-}
-
-Level* Room::GetParent()
-{
-	return parent;
 }

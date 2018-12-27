@@ -1,5 +1,7 @@
 #pragma once
 
+#include "globals.hpp"
+#include "Level.hpp"
 #include <vector>
 #include <random>
 #include <iostream>
@@ -38,7 +40,6 @@ private:
 
 public:
 	Room(Level* parent, int width, int height);
-	Level* GetParent();
 
 	void InsertTileOnGround(int type);
 
@@ -49,4 +50,6 @@ public:
 	void DrawToConsole();
 
 	std::vector<std::vector<int>> GetTiles();
+
+	void Play();
 };
