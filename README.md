@@ -4,8 +4,8 @@ Written in C++ with SDL for graphics
 
 ## TODO (Logic)
 - [x] Working entity component system
-- [x] Transform Component
-- [x] Hitbox Component
+- [ ] Transform Component
+- [ ] Hitbox Component
 - [x] Procedural level:
   - [x] Generation algorithm for Rooms
   - [x] Many rooms linked by portals
