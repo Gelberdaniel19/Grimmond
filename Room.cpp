@@ -34,8 +34,12 @@ void Room::Play()
 				player.AddComponent<TransformComponent>(row*100+10, col*100+10, 80, 80);
 			} else if (tiles[row][col] >= 100 && tiles[row][col] < 200) {
 				tile.name = "portal";
-				tile.AddComponent<RenderComponent>(2, (tiles[row][col]-99)*20, 100, 100);
-				tile.AddComponent<PortalComponent>(
+				std::vector<RGBColor*> pair = parent->colorPairs[tiles[row][col]-100];
+				tile.AddComponent<RenderComponent>(2, pair[0]->r, pair[0]->g, pair[0]->b);
+				auto& decor = manager->AddEntity();
+				decor.AddComponent<TransformComponent>(row*100+20, col*100+20, 60, 60);
+				decor.AddComponent<RenderComponent>(3, pair[1]->r, pair[1]->g, pair[1]->b);
+				decor.AddComponent<PortalComponent>(
 					parent->GetDestRoom(this, tiles[row][col]),
 					this,
 					&player,

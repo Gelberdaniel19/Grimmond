@@ -1,5 +1,6 @@
 #pragma once
 #include "Room.hpp"
+#include "colors.hpp"
 #include <random>
 
 class World;
@@ -20,6 +21,7 @@ private:
 
 public:
 	Room* activeRoom;
+	std::vector<std::vector<RGBColor*>> colorPairs;
 	bool complete = false;
 
 	// Generates random rooms and links them via portal

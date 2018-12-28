@@ -81,6 +81,10 @@ Level::Level(World* w)
 		rooms[room2]->InsertTileOnGround(portalnum);
 		portalnum++;
 	}
+
+	// Add color pairs for the portals
+	for (int i = 0; i < 20; i++)
+		colorPairs.emplace_back(GenRGBPair());
 }
 
 void Level::Start()

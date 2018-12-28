@@ -1,29 +1,4 @@
-#pragma once
-#include <vector>
-
-struct RGBColor
-{
-    int r;
-    int g;
-    int b;
-    RGBColor(int r, int g, int b) : r(r), g(g), b(b) {};
-    void Print()
-    {
-        std::cout << "RGB: " << r << ", " << g << ", " << b << "\n";
-    }
-};
-
-struct HSLColor
-{
-    int h;
-    int s;
-    int l;
-    HSLColor(int h, int s, int l) : h(h), s(s), l(l) {};
-    void Print()
-    {
-        std::cout << "HSL: " << h << ", " << s << ", " << l << "\n";
-    }
-};
+#include "colors.hpp"
 
 HSLColor* GenHSLColor()
 {
@@ -55,7 +30,6 @@ RGBColor* HSLtoRGB(HSLColor* hsl)
     float h = (float)hsl->h/360;
     float s = (float)hsl->s/100;
     float l = (float)hsl->l/100;
-    std::cout << "HSL: " << h << ", " << s << ", " << l << "\n";
     float r, g, b;
 
     if (s == 0) {
@@ -67,7 +41,6 @@ RGBColor* HSLtoRGB(HSLColor* hsl)
         g = hueToRGB(p, q, h);
         b = hueToRGB(p, q, h - 1.0/3);
     }
-    std::cout << "RGB: " << r << ", " << g << ", " << b << "\n";
 
     return new RGBColor((int)(r*255), (int)(g*255), (int)(b*255));
 }

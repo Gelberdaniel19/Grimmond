@@ -31,7 +31,7 @@ Written in C++ with SDL for graphics
 	- [ ] Player has nested squares
 	- [ ] Different size for portals/player?
 	- [ ] Clouds in background
-	- [ ] Portals have varied color
+	- [x] Portals have varied color
 	- [ ] Themed levels
 	- [ ] Fade in to levels
 
