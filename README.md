@@ -4,8 +4,9 @@ Written in C++ with SDL for graphics
 
 ## TODO (Logic)
 - [x] Working entity component system
-- [ ] Transform Component
-- [ ] Hitbox Component
+- [x] Transform Component
+- [x] Physics Component and System
+- [x] Render Component and System
 - [x] Procedural level:
   - [x] Generation algorithm for Rooms
   - [x] Many rooms linked by portals
@@ -17,10 +18,13 @@ Written in C++ with SDL for graphics
   - [x] Collision algorithm
   - [x] Send collision events to colliding entities
   - [x] Wall and player collision handling
+- [ ] Window
+  - [ ] Empty window
+  - [ ] Window with level shown
+  - [ ] Camera used
+- [ ] Keyboard control
 - [ ] PlayerStats Component
-- [ ] Camera
 - [ ] Game loop
-- [ ] KeyboardControl Component
 - [ ] Sprite Component
 - [ ] Player can traverse portals 
 - [ ] EnemyStats Component
