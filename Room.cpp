@@ -5,37 +5,48 @@ void Room::Play()
 	// Add all the entities
 	AutoManager manager(new EntityManager);
 	manager->AddSystem<RenderSystem>();
+	manager->AddSystem<ControlSystem>();
+	manager->AddSystem<PhysicsSystem>();
 
 	for (int row = 0; row < tiles.size(); row++) {
 		for (int col = 0; col < tiles[0].size(); col++) {
 			auto& tile = manager->AddEntity();
-			tile.AddComponent<TransformComponent>(row*100, col*100, 100, 100);
+			tile.AddComponent<TransformComponent>(row*80, col*80, 80, 80);
 
 			if (tiles[row][col] == GROUND) {
-				tile.name = "ground";
-				tile.AddComponent<RenderComponent>(C_GROUND);
+				tile.AddComponent<RenderComponent>(1, C_GROUND);
 			} else if (tiles[row][col] == WALL) {
-				tile.name = "wall";
-				tile.AddComponent<RenderComponent>(C_WALL);
+				tile.AddComponent<RenderComponent>(1, C_WALL);
+				tile.AddComponent<PhysicsComponent>(false);
 			} else if (tiles[row][col] == PLAYER) {
+				auto& tile2 = manager->AddEntity();
+				tile2.AddComponent<TransformComponent>(row*80, col*80, 80, 80);
+				tile2.AddComponent<RenderComponent>(1, C_GROUND);
 				tile.name = "player";
-				tile.AddComponent<RenderComponent>(C_PLAYER);
+				tile.AddComponent<RenderComponent>(2, C_PLAYER);
+				tile.AddComponent<PhysicsComponent>();
+				tile.AddComponent<ControlComponent>(10);
 			} else if (tiles[row][col] >= 100 && tiles[row][col] < 200) {
 				tile.name = "portal";
-				tile.AddComponent<RenderComponent>(C_PORTAL);
+				tile.AddComponent<RenderComponent>(2, C_PORTAL);
 			} else {
 				tile.Destroy();
 			}
 		}
 	}
 
-	while (!KB.right && running) {
+	unsigned int timediff = 10;
+	while (running) {
+		unsigned int starttime = SDL_GetTicks();
+		SDL_Delay(10);
 		SDL_RenderClear(renderer);
+
 		HandleInput();
-		manager->Update(1);
+		manager->Update(timediff/1000);
 		SDL_RenderPresent(renderer);
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		SDL_Delay(50);
+
+		timediff = SDL_GetTicks() - starttime;
 	}
 	parent->complete = true;
 }

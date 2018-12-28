@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <iostream>
 #include "ECS.hpp"
 
 #define WIN_WIDTH 1600
