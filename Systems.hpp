@@ -13,8 +13,9 @@ struct RenderComponent : public Component
     int r = 255;
     int g = 0;
     int b = 0;
+    int zlayer = 0;
     RenderComponent();
-    RenderComponent(int r, int g, int b);
+    RenderComponent(int zlayer, int r, int g, int b);
 };
 
 struct PhysicsComponent : public Component
@@ -24,6 +25,12 @@ struct PhysicsComponent : public Component
     float yvel = 0;
     PhysicsComponent();
     PhysicsComponent(bool moving);
+};
+
+struct ControlComponent : public Component
+{
+    float speed;
+    ControlComponent(float speed);
 };
 
 bool AABB(Entity* e1, Entity* e2);
@@ -38,5 +45,11 @@ struct PhysicsSystem : public System
 {
 	float gravity = 0.01;
     PhysicsSystem();
+    void Update(double deltatime, std::vector<Entity*> entities);
+};
+
+struct ControlSystem : public System
+{
+    ControlSystem();
     void Update(double deltatime, std::vector<Entity*> entities);
 };

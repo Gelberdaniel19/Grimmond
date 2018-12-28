@@ -3,26 +3,61 @@
 TransformComponent::TransformComponent(float x, float y, float w, float h) : x(x), y(y), w(w), h(h) {};
 
 RenderComponent::RenderComponent() {}
-RenderComponent::RenderComponent(int r, int g, int b) : r(r), g(g), b(b) {};
+RenderComponent::RenderComponent(int zlayer, int r, int g, int b) : zlayer(zlayer), r(r), g(g), b(b) {};
 
 PhysicsComponent::PhysicsComponent() {}
 PhysicsComponent::PhysicsComponent(bool moving) : moving(moving) {};
 
+ControlComponent::ControlComponent(float speed) : speed(speed) {};
+
+ControlSystem::ControlSystem() { AddComponents<PhysicsComponent, ControlComponent>(); }
+void ControlSystem::Update(double deltatime, std::vector<Entity*> entities)
+{
+    for (Entity* e : entities) {
+        auto p = e->GetComponent<PhysicsComponent>();
+        float speed = e->GetComponent<ControlComponent>()->speed;
+
+        if (KB.up && KB.down)
+            p->yvel = 0;
+        else if (KB.up)
+            p->yvel = -speed;
+        else if (KB.down)
+            p->yvel = speed;
+        else
+            p->yvel = 0;
+
+        if (KB.left && KB.right)
+            p->xvel = 0;
+        else if (KB.left)
+            p->xvel = -speed;
+        else if (KB.right)
+            p->xvel = speed;
+        else
+            p->xvel = 0;
+}
+}
+
 RenderSystem::RenderSystem() { AddComponents<TransformComponent, RenderComponent>(); }
 void RenderSystem::Update(double deltatime, std::vector<Entity*> entities)
 {
-    for (Entity* e : entities) {
-        auto r = e->GetComponent<RenderComponent>();
-        auto t = e->GetComponent<TransformComponent>();
-        SDL_SetRenderDrawColor(renderer, r->r, r->g, r->b, 255);
+    for (int i = 0; i < 3; i++)
+        for (Entity* e : entities) {
+            auto r = e->GetComponent<RenderComponent>();
+            if (r->zlayer != i)
+                continue;
+            std::cout << r->zlayer;
+            auto t = e->GetComponent<TransformComponent>();
+            SDL_SetRenderDrawColor(renderer, r->r, r->g, r->b, 255);
 
-        SDL_Rect rect;
-        rect.x = (int)t->x;
-        rect.y = (int)t->y;
-        rect.w = (int)t->w;
-        rect.h = (int)t->h;
-        SDL_RenderFillRect(renderer, &rect);
-    }
+            SDL_Rect rect;
+            rect.x = (int)t->x;
+            rect.y = (int)t->y;
+            rect.w = (int)t->w;
+            rect.h = (int)t->h;
+            SDL_RenderFillRect(renderer, &rect);
+        }
+
+    std::cout << "\n\n\n" << std::endl;
 }
 
 bool AABB(Entity* e1, Entity* e2)
