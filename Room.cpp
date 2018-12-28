@@ -1,4 +1,5 @@
 #include "Room.hpp"
+#include <random>
 
 void Room::Play()
 {
@@ -10,6 +11,7 @@ void Room::Play()
 	manager->AddSystem<PhysicsSystem>();
 	manager->AddSystem<PortalSystem>();
 	manager->AddSystem<StairSystem>();
+	manager->AddSystem<CloudSystem>();
 	manager->AddSystem<CameraSystem>();
 	manager->AddSystem<RenderSystem>();
 
@@ -19,6 +21,7 @@ void Room::Play()
 	player.AddComponent<PhysicsComponent>();
 	player.AddComponent<ControlComponent>(500);
 
+	// Makes entities from the generated tilemap
 	for (int row = 0; row < tiles.size(); row++) {
 		for (int col = 0; col < tiles[0].size(); col++) {
 			auto& tile = manager->AddEntity();
@@ -58,6 +61,22 @@ void Room::Play()
 		}
 	}
 
+	// Makes clouds
+	std::mt19937 rng;
+    rng.seed(std::random_device()());
+	std::uniform_int_distribution<std::mt19937::result_type> distSize(200, 500);
+	std::uniform_int_distribution<std::mt19937::result_type> distX(0, 100*MAP_WIDTH+400);
+	std::uniform_int_distribution<std::mt19937::result_type> distY(0, 100*MAP_HEIGHT+400);
+	std::uniform_int_distribution<std::mt19937::result_type> distVel(0, 100);
+
+	for (int i = 0; i < 20; i++) {
+		auto& cloud = manager->AddEntity();
+		cloud.AddComponent<RenderComponent>(0, cloudColor->r, cloudColor->g, cloudColor->b);
+		cloud.AddComponent<TransformComponent>((int)distX(rng)-200, (int)distY(rng)-200, distSize(rng), distSize(rng));
+		cloud.AddComponent<CloudComponent>((int)distVel(rng)-50, (int)distVel(rng)-50);
+	}
+
+	// Main loop
 	unsigned int timediff = 10;
 	while (running && !portalHit) {
 		unsigned int starttime = SDL_GetTicks();
@@ -67,7 +86,7 @@ void Room::Play()
 		HandleInput();
 		manager->Update((float)timediff/1000);
 		SDL_RenderPresent(renderer);
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		SDL_SetRenderDrawColor(renderer, bgColor->r, bgColor->g, bgColor->b, 255);
 
 		timediff = SDL_GetTicks() - starttime;
 	}

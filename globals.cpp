@@ -5,6 +5,8 @@ SDL_Window* window;
 SDL_Renderer* renderer;
 Keyboard KB;
 Camera Cam;
+RGBColor* bgColor;
+RGBColor* cloudColor;
 
 float Camera::ScaleWidth(float w2)
 {

@@ -4,11 +4,15 @@
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include "ECS.hpp"
+#include "colors.hpp"
 
 #define WIN_WIDTH 1600
 #define WIN_HEIGHT WIN_WIDTH
 #define MAP_WIDTH 20
 #define MAP_HEIGHT 20
+
+extern RGBColor* bgColor;
+extern RGBColor* cloudColor;
 
 struct Camera
 {

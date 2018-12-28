@@ -5,6 +5,8 @@ TransformComponent::TransformComponent(float x, float y, float w, float h) : x(x
 RenderComponent::RenderComponent() {}
 RenderComponent::RenderComponent(int zlayer, int r, int g, int b) : zlayer(zlayer), r(r), g(g), b(b) {};
 
+CloudComponent::CloudComponent(float xvel, float yvel) : xvel(xvel), yvel(yvel) {};
+
 PhysicsComponent::PhysicsComponent() {}
 PhysicsComponent::PhysicsComponent(bool moving) : moving(moving) {};
 
@@ -131,6 +133,23 @@ void StairSystem::Update(double deltatime, std::vector<Entity*> entities)
     }
 }
 
+CloudSystem::CloudSystem() { AddComponents<TransformComponent, CloudComponent>(); }
+void CloudSystem::Update(double deltatime, std::vector<Entity*> entities)
+{
+    for (Entity* e : entities) {
+        auto c = e->GetComponent<CloudComponent>();
+        auto t = e->GetComponent<TransformComponent>();
+
+        t->x += c->xvel * deltatime;
+        t->y += c->yvel * deltatime;
+
+        if (t->x < -Cam.width/2-t->w) t->x = MAP_WIDTH*100 + Cam.width/2;
+        if (t->y < -Cam.height/2-t->h) t->y = MAP_HEIGHT*100 + Cam.height/2;
+        if (t->x > MAP_WIDTH*100 + Cam.width/2) t->x = -Cam.width/2-t->w;
+        if (t->y > MAP_HEIGHT*100 + Cam.height/2) t->y = -Cam.height/2-t->h;
+    }
+}
+
 CameraSystem::CameraSystem() { AddComponents<TransformComponent, ControlComponent>(); }
 void CameraSystem::Update(double deltatime, std::vector<Entity*> entities)
 {
@@ -171,7 +190,6 @@ void RenderSystem::Update(double deltatime, std::vector<Entity*> entities)
                 rect.h = (int)Cam.ScaleHeight(t->h-40);
                 SDL_RenderFillRect(renderer, &rect);
             }
-
         }
 }
 

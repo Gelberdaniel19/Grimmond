@@ -21,6 +21,12 @@ struct RenderComponent : public Component
     RenderComponent(int zlayer, int r, int g, int b);
 };
 
+struct CloudComponent : public Component
+{
+    float xvel, yvel;
+    CloudComponent(float xvel, float yvel);
+};
+
 struct PhysicsComponent : public Component
 {
 	bool moving = true;
@@ -78,6 +84,12 @@ struct PortalSystem : public System
 struct StairSystem : public System
 {
     StairSystem();
+    void Update(double deltatime, std::vector<Entity*> entities);
+};
+
+struct CloudSystem : public System
+{
+    CloudSystem();
     void Update(double deltatime, std::vector<Entity*> entities);
 };
 

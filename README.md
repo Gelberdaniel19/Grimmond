@@ -30,10 +30,11 @@ Written in C++ with SDL for graphics
   	- [x] Nicer colors
 	- [x] Player has nested squares
 	- [x] Different size for portals/player?
-	- [ ] Clouds in background
+	- [x] Clouds in background
 	- [x] Portals have varied color
 	- [ ] Themed levels
 	- [ ] Fade in to levels
+	- [ ] Floor labels
 
 - [x] Keyboard control
 - [x] Game loop
