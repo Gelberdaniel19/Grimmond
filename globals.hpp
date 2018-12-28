@@ -14,8 +14,8 @@ struct Camera
 {
     float x = 0;
     float y = 0;
-    float width = 1000;
-    float height = 1000;
+    float width = 1500;
+    float height = 1500;
 
     float ScaleWidth(float w2);
     float ScaleHeight(float h2);

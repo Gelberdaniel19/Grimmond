@@ -49,6 +49,7 @@ bool AABB(Entity* e1, Entity* e2);
 
 struct ControlSystem : public System
 {
+    float drag = 10;
     ControlSystem();
     void Update(double deltatime, std::vector<Entity*> entities);
 };

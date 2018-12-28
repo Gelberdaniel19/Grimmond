@@ -16,7 +16,7 @@ void Room::Play()
 	auto& player = manager->AddEntity();
 	player.AddComponent<RenderComponent>(2, C_PLAYER);
 	player.AddComponent<PhysicsComponent>();
-	player.AddComponent<ControlComponent>(10);
+	player.AddComponent<ControlComponent>(500);
 
 	for (int row = 0; row < tiles.size(); row++) {
 		for (int col = 0; col < tiles[0].size(); col++) {
@@ -32,6 +32,12 @@ void Room::Play()
 				tile.AddComponent<RenderComponent>(1, C_GROUND);
 				player.name = "player";
 				player.AddComponent<TransformComponent>(row*100+10, col*100+10, 80, 80);
+			} else if (tiles[row][col] == STAIR) {
+				tile.AddComponent<RenderComponent>(3, C_STAIR_IN);
+				auto& decor = manager->AddEntity();
+				decor.AddComponent<TransformComponent>(row*100-20, col*100-20, 140, 140);
+				decor.AddComponent<RenderComponent>(2, C_STAIR_OUT);
+
 			} else if (tiles[row][col] >= 100 && tiles[row][col] < 200) {
 				tile.name = "portal";
 				std::vector<RGBColor*> pair = parent->colorPairs[tiles[row][col]-100];
@@ -57,7 +63,7 @@ void Room::Play()
 		SDL_RenderClear(renderer);
 
 		HandleInput();
-		manager->Update(timediff/1000);
+		manager->Update((float)timediff/1000);
 		SDL_RenderPresent(renderer);
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 

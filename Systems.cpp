@@ -20,25 +20,43 @@ void ControlSystem::Update(double deltatime, std::vector<Entity*> entities)
         auto p = e->GetComponent<PhysicsComponent>();
         float speed = e->GetComponent<ControlComponent>()->speed;
 
-        // Set vertical speed
-        if (KB.up && KB.down)
-            p->yvel = 0;
-        else if (KB.up)
-            p->yvel = -speed;
-        else if (KB.down)
-            p->yvel = speed;
-        else
-            p->yvel = 0;
+        // Set vertical speed, with a small acceleration period
+        if (KB.up && !KB.down) {
+            p->yvel -= drag*deltatime*speed;
+            if (p->yvel < -speed) p->yvel = -speed;
+        }
+        else if (KB.down && !KB.up) {
+            p->yvel += drag*deltatime*speed;
+            if (p->yvel > speed) p->yvel = speed;
+        }
+        else {
+            if (p->yvel > 0) {
+                p->yvel -= drag*deltatime*speed;
+                if (p->yvel < 0) p->yvel = 0;
+            } else {
+                p->yvel += drag*deltatime*speed;
+                if (p->yvel > 0) p->yvel = 0;
+            }
+        }
 
         // Set horizontal speed
-        if (KB.left && KB.right)
-            p->xvel = 0;
-        else if (KB.left)
-            p->xvel = -speed;
-        else if (KB.right)
-            p->xvel = speed;
-        else
-            p->xvel = 0;
+        if (KB.left && !KB.right) {
+            p->xvel -= drag*deltatime*speed;
+            if (p->xvel < -speed) p->xvel = -speed;
+        }
+        else if (KB.right && !KB.left) {
+            p->xvel += drag*deltatime*speed;
+            if (p->xvel > speed) p->xvel = speed;
+        }
+        else {
+            if (p->xvel > 0) {
+                p->xvel -= drag*deltatime*speed;
+                if (p->xvel < 0) p->xvel = 0;
+            } else {
+                p->xvel += drag*deltatime*speed;
+                if (p->xvel > 0) p->xvel = 0;
+            }
+        }
     }
 }
 
@@ -55,7 +73,7 @@ void PhysicsSystem::Update(double deltatime, std::vector<Entity*> entities)
         else continue;
 
         // X axis movement
-        trans->x += phys->xvel;
+        trans->x += phys->xvel * deltatime;
         for (Entity* e2 : entities) {
             if (e == e2) continue;
 
@@ -70,7 +88,7 @@ void PhysicsSystem::Update(double deltatime, std::vector<Entity*> entities)
         }
 
         // Y axis movement
-        trans->y += phys->yvel;
+        trans->y += phys->yvel * deltatime;
         for (Entity* e2 : entities) {
             if (e == e2) continue;
 
@@ -128,6 +146,17 @@ void RenderSystem::Update(double deltatime, std::vector<Entity*> entities)
             rect.w = (int)Cam.ScaleWidth(t->w);
             rect.h = (int)Cam.ScaleHeight(t->h);
             SDL_RenderFillRect(renderer, &rect);
+
+            if (e->name == "player") {
+                SDL_SetRenderDrawColor(renderer, 247, 147, 26, 255);
+                SDL_Rect rect;
+                rect.x = (int)Cam.TransformX(t->x+20);
+                rect.y = (int)Cam.TransformY(t->y+20);
+                rect.w = (int)Cam.ScaleWidth(t->w-40);
+                rect.h = (int)Cam.ScaleHeight(t->h-40);
+                SDL_RenderFillRect(renderer, &rect);
+            }
+
         }
 }
 

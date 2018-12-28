@@ -19,10 +19,12 @@
 // enemies:  300-399
 
 // TILE COLORS
-#define C_GROUND 0, 255, 0
+#define C_GROUND 41, 144, 35
 #define C_WALL 30, 30, 30
-#define C_PLAYER 247, 147, 26
+#define C_PLAYER 43, 0, 51
 #define C_PORTAL 191, 0, 255
+#define C_STAIR_OUT 105, 59, 113
+#define C_STAIR_IN 43, 0, 51
 
 class Level;
 
