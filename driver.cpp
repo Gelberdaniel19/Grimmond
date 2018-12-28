@@ -3,8 +3,16 @@
 #include "Level.hpp"
 #include "World.hpp"
 
+// DELETE this
+#include "Colors.hpp"
+
 int main()
 {
+	// DELETE THIS
+	std::vector<RGBColor*> pair = GenRGBPair();
+	std::cout << pair[0]->r << " " << pair[0]->g << " " << pair[0]->b << std::endl;
+	std::cout << pair[1]->r << " " << pair[1]->g << " " << pair[1]->b << std::endl;
+
 	SDL_Init(SDL_INIT_EVERYTHING);
 	TTF_Init();
 
