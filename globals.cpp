@@ -8,11 +8,11 @@ Camera Cam;
 
 float Camera::ScaleWidth(float w2)
 {
-    return WIN_WIDTH * w2 / width;
+    return (WIN_WIDTH * w2 / width)+1;
 }
 float Camera::ScaleHeight(float h2)
 {
-    return WIN_HEIGHT * h2 / height;
+    return (WIN_HEIGHT * h2 / height)+1;
 }
 float Camera::TransformX(float x2)
 {

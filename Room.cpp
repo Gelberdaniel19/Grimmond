@@ -14,7 +14,7 @@ void Room::Play()
 
 	// Make player (position found later)
 	auto& player = manager->AddEntity();
-	player.AddComponent<RenderComponent>(3, C_PLAYER);
+	player.AddComponent<RenderComponent>(2, C_PLAYER);
 	player.AddComponent<PhysicsComponent>();
 	player.AddComponent<ControlComponent>(10);
 
@@ -35,7 +35,7 @@ void Room::Play()
 			} else if (tiles[row][col] >= 100 && tiles[row][col] < 200) {
 				tile.name = "portal";
 				std::vector<RGBColor*> pair = parent->colorPairs[tiles[row][col]-100];
-				tile.AddComponent<RenderComponent>(2, pair[0]->r, pair[0]->g, pair[0]->b);
+				tile.AddComponent<RenderComponent>(3, pair[0]->r, pair[0]->g, pair[0]->b);
 				auto& decor = manager->AddEntity();
 				decor.AddComponent<TransformComponent>(row*100+20, col*100+20, 60, 60);
 				decor.AddComponent<RenderComponent>(3, pair[1]->r, pair[1]->g, pair[1]->b);
@@ -63,6 +63,7 @@ void Room::Play()
 
 		timediff = SDL_GetTicks() - starttime;
 	}
+	manager->Purge();
 }
 
 Room::Room(Level* p, int width, int height)
