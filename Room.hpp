@@ -18,6 +18,12 @@
 // powerups: 200-299
 // enemies:  300-399
 
+// TILE COLORS
+#define C_GROUND 0, 255, 0
+#define C_WALL 30, 30, 30
+#define C_PLAYER 247, 147, 26
+#define C_PORTAL 191, 0, 255
+
 class Level;
 
 /**

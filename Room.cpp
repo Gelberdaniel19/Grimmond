@@ -2,9 +2,39 @@
 
 void Room::Play()
 {
+	// Add all the entities
 	AutoManager manager(new EntityManager);
-	while (!KB.right) {
+	manager->AddSystem<RenderSystem>();
+
+	for (int row = 0; row < tiles.size(); row++) {
+		for (int col = 0; col < tiles[0].size(); col++) {
+			auto& tile = manager->AddEntity();
+			tile.AddComponent<TransformComponent>(row*100, col*100, 100, 100);
+
+			if (tiles[row][col] == GROUND) {
+				tile.name = "ground";
+				tile.AddComponent<RenderComponent>(C_GROUND);
+			} else if (tiles[row][col] == WALL) {
+				tile.name = "wall";
+				tile.AddComponent<RenderComponent>(C_WALL);
+			} else if (tiles[row][col] == PLAYER) {
+				tile.name = "player";
+				tile.AddComponent<RenderComponent>(C_PLAYER);
+			} else if (tiles[row][col] >= 100 && tiles[row][col] < 200) {
+				tile.name = "portal";
+				tile.AddComponent<RenderComponent>(C_PORTAL);
+			} else {
+				tile.Destroy();
+			}
+		}
+	}
+
+	while (!KB.right && running) {
+		SDL_RenderClear(renderer);
 		HandleInput();
+		manager->Update(1);
+		SDL_RenderPresent(renderer);
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_Delay(50);
 	}
 	parent->complete = true;
