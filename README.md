@@ -32,7 +32,8 @@ Written in C++ with SDL for graphics
 	- [ ] Different size for portals/player?
 	- [ ] Clouds in background
 	- [ ] Portals have varied color
-	- [ ] Themed levels  
+	- [ ] Themed levels
+	- [ ] Fade in to levels
 
 - [x] Keyboard control
 - [x] Game loop

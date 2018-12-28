@@ -54,7 +54,7 @@ void CameraSystem::Update(double deltatime, std::vector<Entity*> entities)
 RenderSystem::RenderSystem() { AddComponents<TransformComponent, RenderComponent>(); }
 void RenderSystem::Update(double deltatime, std::vector<Entity*> entities)
 {
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 4; i++)
         for (Entity* e : entities) {
             auto r = e->GetComponent<RenderComponent>();
             if (r->zlayer != i)

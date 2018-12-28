@@ -24,7 +24,7 @@ void Room::Play()
 				tile2.AddComponent<TransformComponent>(row*100, col*100, 100, 100);
 				tile2.AddComponent<RenderComponent>(1, C_GROUND);
 				tile.name = "player";
-				tile.AddComponent<RenderComponent>(2, C_PLAYER);
+				tile.AddComponent<RenderComponent>(3, C_PLAYER);
 				tile.AddComponent<PhysicsComponent>();
 				tile.AddComponent<ControlComponent>(10);
 			} else if (tiles[row][col] >= 100 && tiles[row][col] < 200) {
