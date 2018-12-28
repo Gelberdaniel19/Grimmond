@@ -38,7 +38,7 @@ Written in C++ with SDL for graphics
 - [x] Keyboard control
 - [x] Game loop
 
-- [ ] Traverse Rooms
+- [x] Traverse Rooms
 - [ ] Traverse Levels
 
 - [ ] Player stats

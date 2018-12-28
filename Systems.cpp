@@ -8,6 +8,9 @@ RenderComponent::RenderComponent(int zlayer, int r, int g, int b) : zlayer(zlaye
 PhysicsComponent::PhysicsComponent() {}
 PhysicsComponent::PhysicsComponent(bool moving) : moving(moving) {};
 
+PortalComponent::PortalComponent(Room* newroom, Room* room, Entity* player, bool* hit)
+    : linkedRoom(newroom), currentRoom(room), player(player), hit(hit) {};
+
 ControlComponent::ControlComponent(float speed) : speed(speed) {};
 
 ControlSystem::ControlSystem() { AddComponents<PhysicsComponent, ControlComponent>(); }
@@ -39,6 +42,62 @@ void ControlSystem::Update(double deltatime, std::vector<Entity*> entities)
     }
 }
 
+PhysicsSystem::PhysicsSystem() { AddComponents<TransformComponent, PhysicsComponent>(); }
+void PhysicsSystem::Update(double deltatime, std::vector<Entity*> entities)
+{
+    for (Entity* e : entities) {
+        auto trans = e->GetComponent<TransformComponent>();
+        auto phys = e->GetComponent<PhysicsComponent>();
+
+        // Apply gravity to moving objects
+        if (phys->moving)
+        phys->yvel -= gravity * deltatime;
+        else continue;
+
+        // X axis movement
+        trans->x += phys->xvel;
+        for (Entity* e2 : entities) {
+            if (e == e2) continue;
+
+            auto trans2 = e2->GetComponent<TransformComponent>();
+            if (AABB(e, e2)) {
+                if (phys->xvel > 0)
+                trans->x = trans2->x - trans->w;
+                else if (phys->xvel < 0)
+                trans->x = trans2->x + trans2->w;
+                phys->xvel = 0;
+            }
+        }
+
+        // Y axis movement
+        trans->y += phys->yvel;
+        for (Entity* e2 : entities) {
+            if (e == e2) continue;
+
+            auto trans2 = e2->GetComponent<TransformComponent>();
+            if (AABB(e, e2)) {
+                if (phys->yvel > 0)
+                trans->y = trans2->y - trans->h;
+                else if (phys->yvel < 0)
+                trans->y = trans2->y + trans2->h;
+                phys->yvel = 0;
+            }
+        }
+    }
+}
+
+PortalSystem::PortalSystem() { AddComponents<PortalComponent, TransformComponent>(); }
+void PortalSystem::Update(double deltatime, std::vector<Entity*> entities)
+{
+    for (Entity* e : entities) {
+        auto portal = e->GetComponent<PortalComponent>();
+        if (AABB(e, portal->player)) {
+            *(portal->hit) = true;
+            portal->currentRoom->parent->activeRoom = portal->linkedRoom;
+        }
+    }
+}
+
 CameraSystem::CameraSystem() { AddComponents<TransformComponent, ControlComponent>(); }
 void CameraSystem::Update(double deltatime, std::vector<Entity*> entities)
 {
@@ -50,6 +109,7 @@ void CameraSystem::Update(double deltatime, std::vector<Entity*> entities)
         Cam.y = (t->y + t->h/2) - (Cam.height/2);
     }
 }
+
 
 RenderSystem::RenderSystem() { AddComponents<TransformComponent, RenderComponent>(); }
 void RenderSystem::Update(double deltatime, std::vector<Entity*> entities)
@@ -75,53 +135,11 @@ bool AABB(Entity* e1, Entity* e2)
 {
     auto t1 = e1->GetComponent<TransformComponent>();
     auto t2 = e2->GetComponent<TransformComponent>();
+    if (t1 == nullptr || t2 == nullptr)
+        return false;
+
     return ((int)t1->x < (t2->x + t2->w) &&
             (int)t2->x < (t1->x + t1->w) &&
             (int)t1->y < (t2->y + t2->h) &&
             (int)t2->y < (t1->y + t1->h));
-}
-
-
-PhysicsSystem::PhysicsSystem() { AddComponents<TransformComponent, PhysicsComponent>(); }
-void PhysicsSystem::Update(double deltatime, std::vector<Entity*> entities)
-{
- 	for (Entity* e : entities) {
-        auto trans = e->GetComponent<TransformComponent>();
-        auto phys = e->GetComponent<PhysicsComponent>();
-
-		// Apply gravity to moving objects
-        if (phys->moving)
-            phys->yvel -= gravity * deltatime;
-		else continue;
-
-        // X axis movement
-        trans->x += phys->xvel;
-        for (Entity* e2 : entities) {
-            if (e == e2) continue;
-
-            auto trans2 = e2->GetComponent<TransformComponent>();
-            if (AABB(e, e2)) {
-                if (phys->xvel > 0)
-                    trans->x = trans2->x - trans->w;
-                else if (phys->xvel < 0)
-                    trans->x = trans2->x + trans2->w;
-                phys->xvel = 0;
-			}
-        }
-
-		// Y axis movement
-        trans->y += phys->yvel;
-        for (Entity* e2 : entities) {
-            if (e == e2) continue;
-
-            auto trans2 = e2->GetComponent<TransformComponent>();
-            if (AABB(e, e2)) {
-                if (phys->yvel > 0)
-					trans->y = trans2->y - trans->h;
-                else if (phys->yvel < 0)
-                    trans->y = trans2->y + trans2->h;
-                phys->yvel = 0;
-            }
-        }
-    }
 }

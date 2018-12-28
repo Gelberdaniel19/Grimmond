@@ -15,11 +15,11 @@ private:
 	World* world;
 	int level;
 	int roomCount;
-	Room* activeRoom;
 	std::vector<Room*> rooms;
 	std::mt19937 rng;
 
 public:
+	Room* activeRoom;
 	bool complete = false;
 
 	// Generates random rooms and links them via portal

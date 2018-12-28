@@ -39,7 +39,7 @@ class Room
 private:
 	std::vector<std::vector<int>> tiles;
 	std::mt19937 rng;
-	Level* parent;
+	bool portalHit = false;
 
 	void CarveSquare();
 	void AddWalls(int x, int y);
@@ -47,12 +47,14 @@ private:
 	bool AllAccessible(std::vector<std::vector<int>> vec);
 
 public:
+	Level* parent;
 	Room(Level* parent, int width, int height);
 
 	void InsertTileOnGround(int type);
 
 	bool IsGroundType(int x, int y);
 	bool HasPortal();
+	bool HasTile(int type);
 
 	void GenerateMap(int width, int height);
 	void DrawToConsole();

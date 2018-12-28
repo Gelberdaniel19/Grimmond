@@ -1,6 +1,9 @@
 #pragma once
 #include "globals.hpp"
 #include "ECS.hpp"
+#include "Room.hpp"
+
+class Room;
 
 struct TransformComponent : public Component
 {
@@ -27,6 +30,15 @@ struct PhysicsComponent : public Component
     PhysicsComponent(bool moving);
 };
 
+struct PortalComponent : public Component
+{
+    bool* hit;
+    Room* linkedRoom;
+    Room* currentRoom;
+    Entity* player;
+    PortalComponent(Room* linkedRoom, Room* currentRoom, Entity* player, bool* hit);
+};
+
 struct ControlComponent : public Component
 {
     float speed;
@@ -35,9 +47,9 @@ struct ControlComponent : public Component
 
 bool AABB(Entity* e1, Entity* e2);
 
-struct RenderSystem : public System
+struct ControlSystem : public System
 {
-    RenderSystem();
+    ControlSystem();
     void Update(double deltatime, std::vector<Entity*> entities);
 };
 
@@ -48,14 +60,20 @@ struct PhysicsSystem : public System
     void Update(double deltatime, std::vector<Entity*> entities);
 };
 
-struct ControlSystem : public System
+struct PortalSystem : public System
 {
-    ControlSystem();
+    PortalSystem();
     void Update(double deltatime, std::vector<Entity*> entities);
 };
 
 struct CameraSystem : public System
 {
     CameraSystem();
+    void Update(double deltatime, std::vector<Entity*> entities);
+};
+
+struct RenderSystem : public System
+{
+    RenderSystem();
     void Update(double deltatime, std::vector<Entity*> entities);
 };

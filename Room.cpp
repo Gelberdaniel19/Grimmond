@@ -2,12 +2,21 @@
 
 void Room::Play()
 {
+	portalHit = false;
+
 	// Add all the entities
 	AutoManager manager(new EntityManager);
 	manager->AddSystem<ControlSystem>();
 	manager->AddSystem<PhysicsSystem>();
+	manager->AddSystem<PortalSystem>();
 	manager->AddSystem<CameraSystem>();
 	manager->AddSystem<RenderSystem>();
+
+	// Make player (position found later)
+	auto& player = manager->AddEntity();
+	player.AddComponent<RenderComponent>(3, C_PLAYER);
+	player.AddComponent<PhysicsComponent>();
+	player.AddComponent<ControlComponent>(10);
 
 	for (int row = 0; row < tiles.size(); row++) {
 		for (int col = 0; col < tiles[0].size(); col++) {
@@ -20,16 +29,17 @@ void Room::Play()
 				tile.AddComponent<RenderComponent>(1, C_WALL);
 				tile.AddComponent<PhysicsComponent>(false);
 			} else if (tiles[row][col] == PLAYER) {
-				auto& tile2 = manager->AddEntity();
-				tile2.AddComponent<TransformComponent>(row*100, col*100, 100, 100);
-				tile2.AddComponent<RenderComponent>(1, C_GROUND);
-				tile.name = "player";
-				tile.AddComponent<RenderComponent>(3, C_PLAYER);
-				tile.AddComponent<PhysicsComponent>();
-				tile.AddComponent<ControlComponent>(10);
+				tile.AddComponent<RenderComponent>(1, C_GROUND);
+				player.name = "player";
+				player.AddComponent<TransformComponent>(row*100+10, col*100+10, 80, 80);
 			} else if (tiles[row][col] >= 100 && tiles[row][col] < 200) {
 				tile.name = "portal";
-				tile.AddComponent<RenderComponent>(2, C_PORTAL);
+				tile.AddComponent<RenderComponent>(2, (tiles[row][col]-99)*20, 100, 100);
+				tile.AddComponent<PortalComponent>(
+					parent->GetDestRoom(this, tiles[row][col]),
+					this,
+					&player,
+				 	&portalHit);
 			} else {
 				tile.Destroy();
 			}
@@ -37,7 +47,7 @@ void Room::Play()
 	}
 
 	unsigned int timediff = 10;
-	while (running) {
+	while (running && !portalHit) {
 		unsigned int starttime = SDL_GetTicks();
 		SDL_Delay(10);
 		SDL_RenderClear(renderer);
@@ -49,7 +59,6 @@ void Room::Play()
 
 		timediff = SDL_GetTicks() - starttime;
 	}
-	parent->complete = true;
 }
 
 Room::Room(Level* p, int width, int height)
@@ -225,6 +234,15 @@ bool Room::HasPortal()
 	for (int i = 0; i < tiles.size(); i++)
 		for (int j = 0; j < tiles[0].size(); j++)
 			if (tiles[i][j] >= 100 and tiles[i][j] < 200)
+				return true;
+	return false;
+}
+
+bool Room::HasTile(int tile)
+{
+	for (int i = 0; i < tiles.size(); i++)
+		for (int j = 0; j < tiles[0].size(); j++)
+			if (tiles[i][j] == tile)
 				return true;
 	return false;
 }
