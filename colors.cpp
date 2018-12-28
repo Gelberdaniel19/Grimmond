@@ -47,8 +47,15 @@ RGBColor* HSLtoRGB(HSLColor* hsl)
 
 std::vector<RGBColor*> GenRGBPair()
 {
+    std::mt19937 rng;
+    rng.seed(std::random_device()());
+    std::uniform_int_distribution<std::mt19937::result_type> distH(0, 90);
+
     HSLColor* hsl1 = GenHSLColor();
-    HSLColor* hsl2 = new HSLColor(hsl1->h, hsl1->s, hsl1->l+30);
+    int hue = hsl1->h + distH(rng);
+    if (hue > 360)
+        hue -= 360;
+    HSLColor* hsl2 = new HSLColor(hue, hsl1->s, hsl1->l+30);
 
     std::vector<RGBColor*> pair;
     pair.emplace_back(HSLtoRGB(hsl1));
