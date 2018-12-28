@@ -11,6 +11,9 @@ PhysicsComponent::PhysicsComponent(bool moving) : moving(moving) {};
 PortalComponent::PortalComponent(Room* newroom, Room* room, Entity* player, bool* hit)
     : linkedRoom(newroom), currentRoom(room), player(player), hit(hit) {};
 
+StairComponent::StairComponent(Room* room, Entity* player, bool* hit)
+    : currentRoom(room), player(player), hit(hit) {};
+
 ControlComponent::ControlComponent(float speed) : speed(speed) {};
 
 ControlSystem::ControlSystem() { AddComponents<PhysicsComponent, ControlComponent>(); }
@@ -112,6 +115,18 @@ void PortalSystem::Update(double deltatime, std::vector<Entity*> entities)
         if (AABB(e, portal->player)) {
             *(portal->hit) = true;
             portal->currentRoom->parent->activeRoom = portal->linkedRoom;
+        }
+    }
+}
+
+StairSystem::StairSystem() { AddComponents<StairComponent, TransformComponent>(); }
+void StairSystem::Update(double deltatime, std::vector<Entity*> entities)
+{
+    for (Entity* e : entities) {
+        auto stair = e->GetComponent<StairComponent>();
+        if (AABB(e, stair->player)) {
+            *(stair->hit) = true;
+            stair->currentRoom->parent->complete = true;
         }
     }
 }

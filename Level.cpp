@@ -89,9 +89,7 @@ Level::Level(World* w)
 
 void Level::Start()
 {
-	std::cout << "Entering Level" << std::endl;
 	while (!complete && running) {
-		std::cout << "Entering Room " << activeRoom << std::endl;
 		activeRoom->InsertTileOnGround(PLAYER);
 		activeRoom->Play();
 	}

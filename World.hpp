@@ -15,8 +15,10 @@ public:
 
 World::World()
 {
-    activeLevel = new Level(this);
-    activeLevel->Start();
+    while (running) {
+        activeLevel = new Level(this);
+        activeLevel->Start();
+    }
 }
 
 World::~World()

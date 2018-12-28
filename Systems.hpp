@@ -39,6 +39,14 @@ struct PortalComponent : public Component
     PortalComponent(Room* linkedRoom, Room* currentRoom, Entity* player, bool* hit);
 };
 
+struct StairComponent : public Component
+{
+    bool* hit;
+    Room* currentRoom;
+    Entity* player;
+    StairComponent(Room* currentRoom, Entity* player, bool* hit);
+};
+
 struct ControlComponent : public Component
 {
     float speed;
@@ -64,6 +72,12 @@ struct PhysicsSystem : public System
 struct PortalSystem : public System
 {
     PortalSystem();
+    void Update(double deltatime, std::vector<Entity*> entities);
+};
+
+struct StairSystem : public System
+{
+    StairSystem();
     void Update(double deltatime, std::vector<Entity*> entities);
 };
 

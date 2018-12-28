@@ -9,6 +9,7 @@ void Room::Play()
 	manager->AddSystem<ControlSystem>();
 	manager->AddSystem<PhysicsSystem>();
 	manager->AddSystem<PortalSystem>();
+	manager->AddSystem<StairSystem>();
 	manager->AddSystem<CameraSystem>();
 	manager->AddSystem<RenderSystem>();
 
@@ -37,6 +38,7 @@ void Room::Play()
 				auto& decor = manager->AddEntity();
 				decor.AddComponent<TransformComponent>(row*100-20, col*100-20, 140, 140);
 				decor.AddComponent<RenderComponent>(2, C_STAIR_OUT);
+				decor.AddComponent<StairComponent>(this, &player, &portalHit);
 
 			} else if (tiles[row][col] >= 100 && tiles[row][col] < 200) {
 				tile.name = "portal";

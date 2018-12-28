@@ -27,9 +27,9 @@ Written in C++ with SDL for graphics
   	- [x] Z depth in render system
   - [x] Camera used
   - [ ] Prettify (NOT IMPORTANT)
-  	- [ ] Nicer colors
-	- [ ] Player has nested squares
-	- [ ] Different size for portals/player?
+  	- [x] Nicer colors
+	- [x] Player has nested squares
+	- [x] Different size for portals/player?
 	- [ ] Clouds in background
 	- [x] Portals have varied color
 	- [ ] Themed levels
@@ -39,7 +39,7 @@ Written in C++ with SDL for graphics
 - [x] Game loop
 
 - [x] Traverse Rooms
-- [ ] Traverse Levels
+- [x] Traverse Levels
 
 - [ ] Player stats
 - [ ] Enemy stats
