@@ -27,7 +27,7 @@ Level::Level(World* w)
 	int roomCount = randRoomCount(rng);
 	std::uniform_int_distribution<std::mt19937::result_type> randRoomPicker(0, roomCount-1);
 	for (int i = 0; i < roomCount; i++)
-		rooms.emplace_back(new Room(this, 20, 20));
+		rooms.emplace_back(new Room(this, MAP_WIDTH, MAP_HEIGHT));
 
 	// Put player and stairs in random different rooms
 	int playerRoom = randRoomPicker(rng);

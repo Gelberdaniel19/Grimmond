@@ -12,7 +12,6 @@ int main()
 	renderer = SDL_CreateRenderer(window, -1, 0);
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderPresent(renderer);
-	SDL_Delay(1000);
 
 	World world;
 
