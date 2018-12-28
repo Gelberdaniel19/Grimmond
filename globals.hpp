@@ -10,6 +10,19 @@
 #define MAP_WIDTH 20
 #define MAP_HEIGHT 20
 
+struct Camera
+{
+    float x = 0;
+    float y = 0;
+    float width = 1000;
+    float height = 1000;
+
+    float ScaleWidth(float w2);
+    float ScaleHeight(float h2);
+    float TransformX(float x2);
+    float TransformY(float y2);
+}; extern Camera Cam;
+
 extern bool running;
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;

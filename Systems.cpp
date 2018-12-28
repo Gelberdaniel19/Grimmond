@@ -17,6 +17,7 @@ void ControlSystem::Update(double deltatime, std::vector<Entity*> entities)
         auto p = e->GetComponent<PhysicsComponent>();
         float speed = e->GetComponent<ControlComponent>()->speed;
 
+        // Set vertical speed
         if (KB.up && KB.down)
             p->yvel = 0;
         else if (KB.up)
@@ -26,6 +27,7 @@ void ControlSystem::Update(double deltatime, std::vector<Entity*> entities)
         else
             p->yvel = 0;
 
+        // Set horizontal speed
         if (KB.left && KB.right)
             p->xvel = 0;
         else if (KB.left)
@@ -34,7 +36,19 @@ void ControlSystem::Update(double deltatime, std::vector<Entity*> entities)
             p->xvel = speed;
         else
             p->xvel = 0;
+    }
 }
+
+CameraSystem::CameraSystem() { AddComponents<TransformComponent, ControlComponent>(); }
+void CameraSystem::Update(double deltatime, std::vector<Entity*> entities)
+{
+    for (Entity* e : entities) {
+        auto t = e->GetComponent<TransformComponent>();
+
+        // Centers the camera on the player
+        Cam.x = (t->x + t->w/2) - (Cam.width/2);
+        Cam.y = (t->y + t->h/2) - (Cam.height/2);
+    }
 }
 
 RenderSystem::RenderSystem() { AddComponents<TransformComponent, RenderComponent>(); }
@@ -45,19 +59,16 @@ void RenderSystem::Update(double deltatime, std::vector<Entity*> entities)
             auto r = e->GetComponent<RenderComponent>();
             if (r->zlayer != i)
                 continue;
-            std::cout << r->zlayer;
             auto t = e->GetComponent<TransformComponent>();
             SDL_SetRenderDrawColor(renderer, r->r, r->g, r->b, 255);
 
             SDL_Rect rect;
-            rect.x = (int)t->x;
-            rect.y = (int)t->y;
-            rect.w = (int)t->w;
-            rect.h = (int)t->h;
+            rect.x = (int)Cam.TransformX(t->x);
+            rect.y = (int)Cam.TransformY(t->y);
+            rect.w = (int)Cam.ScaleWidth(t->w);
+            rect.h = (int)Cam.ScaleHeight(t->h);
             SDL_RenderFillRect(renderer, &rect);
         }
-
-    std::cout << "\n\n\n" << std::endl;
 }
 
 bool AABB(Entity* e1, Entity* e2)

@@ -4,14 +4,15 @@ void Room::Play()
 {
 	// Add all the entities
 	AutoManager manager(new EntityManager);
-	manager->AddSystem<RenderSystem>();
 	manager->AddSystem<ControlSystem>();
 	manager->AddSystem<PhysicsSystem>();
+	manager->AddSystem<CameraSystem>();
+	manager->AddSystem<RenderSystem>();
 
 	for (int row = 0; row < tiles.size(); row++) {
 		for (int col = 0; col < tiles[0].size(); col++) {
 			auto& tile = manager->AddEntity();
-			tile.AddComponent<TransformComponent>(row*80, col*80, 80, 80);
+			tile.AddComponent<TransformComponent>(row*100, col*100, 100, 100);
 
 			if (tiles[row][col] == GROUND) {
 				tile.AddComponent<RenderComponent>(1, C_GROUND);
@@ -20,7 +21,7 @@ void Room::Play()
 				tile.AddComponent<PhysicsComponent>(false);
 			} else if (tiles[row][col] == PLAYER) {
 				auto& tile2 = manager->AddEntity();
-				tile2.AddComponent<TransformComponent>(row*80, col*80, 80, 80);
+				tile2.AddComponent<TransformComponent>(row*100, col*100, 100, 100);
 				tile2.AddComponent<RenderComponent>(1, C_GROUND);
 				tile.name = "player";
 				tile.AddComponent<RenderComponent>(2, C_PLAYER);

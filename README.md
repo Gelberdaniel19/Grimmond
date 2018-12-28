@@ -21,16 +21,21 @@ Written in C++ with SDL for graphics
   - [x] Send collision events to colliding entities
   - [x] Wall and player collision handling
   
-- [ ] Window
+- [x] Window
   - [x] Empty window
   - [x] Window with level shown
-  - [ ] Camera used
-  
+  	- [x] Z depth in render system
+  - [x] Camera used
+  - [ ] Prettify (NOT IMPORTANT)
+  	- [ ] Nicer colors
+	- [ ] Player has nested squares
+	- [ ] Different size for portals/player?
+	- [ ] Clouds in background
+	- [ ] Portals have varied color
+	- [ ] Themed levels  
+
 - [x] Keyboard control
 - [x] Game loop
-
-- [ ] Clouds in background
-  - [x] Z depth in render system
 
 - [ ] Traverse Rooms
 - [ ] Traverse Levels

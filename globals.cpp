@@ -4,6 +4,24 @@ bool running = true;
 SDL_Window* window;
 SDL_Renderer* renderer;
 Keyboard KB;
+Camera Cam;
+
+float Camera::ScaleWidth(float w2)
+{
+    return WIN_WIDTH * w2 / width;
+}
+float Camera::ScaleHeight(float h2)
+{
+    return WIN_HEIGHT * h2 / height;
+}
+float Camera::TransformX(float x2)
+{
+    return ((x2-x) * WIN_WIDTH / width);
+}
+float Camera::TransformY(float y2)
+{
+    return ((y2-y) * WIN_HEIGHT / height);
+}
 
 void HandleInput()
 {

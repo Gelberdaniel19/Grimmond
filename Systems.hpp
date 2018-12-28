@@ -53,3 +53,9 @@ struct ControlSystem : public System
     ControlSystem();
     void Update(double deltatime, std::vector<Entity*> entities);
 };
+
+struct CameraSystem : public System
+{
+    CameraSystem();
+    void Update(double deltatime, std::vector<Entity*> entities);
+};
