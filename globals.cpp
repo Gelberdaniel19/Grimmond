@@ -7,6 +7,10 @@ Keyboard KB;
 Camera Cam;
 RGBColor* bgColor;
 RGBColor* cloudColor;
+int level = 0;
+SDL_Surface* surface;
+SDL_Texture* message;
+TTF_Font* font;
 
 float Camera::ScaleWidth(float w2)
 {

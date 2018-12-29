@@ -80,11 +80,13 @@ void Room::Play()
 	unsigned int timediff = 10;
 	while (running && !portalHit) {
 		unsigned int starttime = SDL_GetTicks();
-		SDL_Delay(10);
+		if (timediff < 10)
+			SDL_Delay(10-timediff);
 		SDL_RenderClear(renderer);
 
 		HandleInput();
 		manager->Update((float)timediff/1000);
+		RenderHUD();
 		SDL_RenderPresent(renderer);
 		SDL_SetRenderDrawColor(renderer, bgColor->r, bgColor->g, bgColor->b, 255);
 

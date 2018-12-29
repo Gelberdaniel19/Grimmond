@@ -14,6 +14,8 @@
 extern RGBColor* bgColor;
 extern RGBColor* cloudColor;
 
+extern int level;
+
 struct Camera
 {
     float x = 0;
@@ -30,6 +32,9 @@ struct Camera
 extern bool running;
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
+extern TTF_Font* font;
+extern SDL_Surface* surface;
+extern SDL_Texture* message;
 
 struct Keyboard
 {

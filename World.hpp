@@ -4,7 +4,6 @@
 class World
 {
 private:
-    int level = 1;
     Level* activeLevel;
 
 public:
@@ -25,6 +24,7 @@ World::World()
         delete hsl;
         delete hsl2;
 
+        level++;
         activeLevel = new Level(this);
         activeLevel->Start();
     }

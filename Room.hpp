@@ -3,6 +3,7 @@
 #include "globals.hpp"
 #include "Systems.hpp"
 #include "Level.hpp"
+#include "HUD.hpp"
 #include <vector>
 #include <random>
 #include <iostream>
