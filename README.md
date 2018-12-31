@@ -18,7 +18,6 @@ Written in C++ with SDL for graphics
   
 - [x] Collision
   - [x] Collision algorithm
-  - [x] Send collision events to colliding entities
   - [x] Wall and player collision handling
   
 - [x] Window
@@ -34,7 +33,7 @@ Written in C++ with SDL for graphics
 	- [x] Portals have varied color
 	- [ ] Themed levels
 	- [ ] Fade in to levels
-	- [ ] Floor labels
+	- [x] Floor labels
 
 - [x] Keyboard control
 - [x] Game loop
@@ -42,9 +41,11 @@ Written in C++ with SDL for graphics
 - [x] Traverse Rooms
 - [x] Traverse Levels
 
-- [ ] Player stats
-- [ ] Enemy stats
-- [ ] Enemy pathfinding
+- [ ] Enemies
+  - [ ] Spawn
+  - [ ] Aggro
+  - [ ] Pathfinding
+- [ ] Enemy and player health
 
 - [ ] Player projectile ability
 - [ ] Player class types
