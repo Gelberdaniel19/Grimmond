@@ -8,6 +8,7 @@ void Room::Play()
 	// Add all the entities
 	AutoManager manager(new EntityManager);
 	manager->AddSystem<ControlSystem>();
+	manager->AddSystem<AISystem>();
 	manager->AddSystem<PhysicsSystem>();
 	manager->AddSystem<PortalSystem>();
 	manager->AddSystem<StairSystem>();
@@ -17,6 +18,7 @@ void Room::Play()
 
 	// Make player (position found later)
 	auto& player = manager->AddEntity();
+	player.name = "player";
 	player.AddComponent<RenderComponent>(2, C_PLAYER);
 	player.AddComponent<PhysicsComponent>();
 	player.AddComponent<ControlComponent>(500);
@@ -42,7 +44,14 @@ void Room::Play()
 				decor.AddComponent<TransformComponent>(row*100-20, col*100-20, 140, 140);
 				decor.AddComponent<RenderComponent>(2, C_STAIR_OUT);
 				decor.AddComponent<StairComponent>(this, &player, &portalHit);
-
+			} else if (tiles[row][col] == ENEMY) {
+				tile.AddComponent<RenderComponent>(1, C_GROUND);
+				auto& enemy = manager->AddEntity();
+				enemy.name = "enemy";
+				enemy.AddComponent<TransformComponent>(row*100+25, col*100+25, 50, 50);
+				enemy.AddComponent<RenderComponent>(2, 255, 0, 0);
+				enemy.AddComponent<AIComponent>(&player, 100);
+				enemy.AddComponent<PhysicsComponent>();
 			} else if (tiles[row][col] >= 100 && tiles[row][col] < 200) {
 				tile.name = "portal";
 				std::vector<RGBColor*> pair = parent->colorPairs[tiles[row][col]-100];
@@ -68,15 +77,20 @@ void Room::Play()
 	std::uniform_int_distribution<std::mt19937::result_type> distX(0, 100*MAP_WIDTH+400);
 	std::uniform_int_distribution<std::mt19937::result_type> distY(0, 100*MAP_HEIGHT+400);
 	std::uniform_int_distribution<std::mt19937::result_type> distVel(0, 100);
-
 	for (int i = 0; i < 20; i++) {
 		auto& cloud = manager->AddEntity();
+		cloud.name = "cloud";
 		cloud.AddComponent<RenderComponent>(0, cloudColor->r, cloudColor->g, cloudColor->b);
 		cloud.AddComponent<TransformComponent>((int)distX(rng)-200, (int)distY(rng)-200, distSize(rng), distSize(rng));
 		cloud.AddComponent<CloudComponent>((int)distVel(rng)-50, (int)distVel(rng)-50);
 	}
 
-	// Main loop
+	// Preperation view - the level is shown but not started
+	SDL_RenderClear(renderer);
+	manager->Update(0);
+	RenderHUD();
+	SDL_RenderPresent(renderer);
+
 	unsigned int timediff = 10;
 	while (running && !portalHit) {
 		unsigned int starttime = SDL_GetTicks();
@@ -192,6 +206,7 @@ void Room::GenerateMap(int width, int height)
 	std::mt19937 rng;
 	rng.seed(std::random_device()());
 	std::uniform_int_distribution<std::mt19937::result_type> distSquares(4, 8);
+	std::uniform_int_distribution<std::mt19937::result_type> distEnemies(4, 10);
 	std::uniform_int_distribution<std::mt19937::result_type> distRoomX(2, width-3);
 	std::uniform_int_distribution<std::mt19937::result_type> distRoomY(2, height-3);
 
@@ -239,6 +254,11 @@ void Room::GenerateMap(int width, int height)
 			}
 		}
 	} while (again);
+
+	// Add enemies
+	int enemies = distEnemies(rng);
+	for (int i = 0; i < enemies; i++)
+		InsertTileOnGround(ENEMY);
 }
 
 /**

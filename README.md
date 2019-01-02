@@ -32,7 +32,7 @@ Written in C++ with SDL for graphics
 	- [x] Clouds in background
 	- [x] Portals have varied color
 	- [ ] Themed levels
-	- [ ] Fade in to levels
+	- [x] Fade in to levels
 	- [x] Floor labels
 
 - [x] Keyboard control
@@ -42,9 +42,9 @@ Written in C++ with SDL for graphics
 - [x] Traverse Levels
 
 - [ ] Enemies
-  - [ ] Spawn
+  - [x] Spawn
   - [ ] Aggro
-  - [ ] Pathfinding
+  - [x] Pathfinding
 - [ ] Enemy and player health
 
 - [ ] Player projectile ability

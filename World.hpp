@@ -18,7 +18,7 @@ World::World()
         // Generate background color
         HSLColor* hsl = GenHSLColor();
         hsl->l += 40;
-        HSLColor* hsl2 = new HSLColor(hsl->h, hsl->s, hsl->l-10);
+        HSLColor* hsl2 = new HSLColor(hsl->h, hsl->s, hsl->l-20);
         bgColor = HSLtoRGB(hsl);
         cloudColor = HSLtoRGB(hsl2);
         delete hsl;

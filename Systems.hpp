@@ -27,6 +27,13 @@ struct CloudComponent : public Component
     CloudComponent(float xvel, float yvel);
 };
 
+struct AIComponent : public Component
+{
+    Entity* player;
+    float speed = 1;
+    AIComponent(Entity* player, float speed);
+};
+
 struct PhysicsComponent : public Component
 {
 	bool moving = true;
@@ -56,6 +63,7 @@ struct StairComponent : public Component
 struct ControlComponent : public Component
 {
     float speed;
+    bool active = false;
     ControlComponent(float speed);
 };
 
@@ -64,7 +72,14 @@ bool AABB(Entity* e1, Entity* e2);
 struct ControlSystem : public System
 {
     float drag = 10;
+    double startdelay = 0.6;
     ControlSystem();
+    void Update(double deltatime, std::vector<Entity*> entities);
+};
+
+struct AISystem : public System
+{
+    AISystem();
     void Update(double deltatime, std::vector<Entity*> entities);
 };
 
@@ -101,6 +116,7 @@ struct CameraSystem : public System
 
 struct RenderSystem : public System
 {
+    float fadetime = 0.6;
     RenderSystem();
     void Update(double deltatime, std::vector<Entity*> entities);
 };

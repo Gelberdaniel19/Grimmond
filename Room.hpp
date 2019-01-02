@@ -15,9 +15,9 @@
 #define PLAYER 3
 #define STAIR 4
 #define FLAG 5
+#define ENEMY 6
 // portals:  100-199
 // powerups: 200-299
-// enemies:  300-399
 
 // TILE COLORS
 #define C_GROUND 41, 144, 35

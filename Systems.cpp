@@ -7,6 +7,8 @@ RenderComponent::RenderComponent(int zlayer, int r, int g, int b) : zlayer(zlaye
 
 CloudComponent::CloudComponent(float xvel, float yvel) : xvel(xvel), yvel(yvel) {};
 
+AIComponent::AIComponent(Entity* player, float speed) : player(player), speed(speed) {};
+
 PhysicsComponent::PhysicsComponent() {}
 PhysicsComponent::PhysicsComponent(bool moving) : moving(moving) {};
 
@@ -21,16 +23,25 @@ ControlComponent::ControlComponent(float speed) : speed(speed) {};
 ControlSystem::ControlSystem() { AddComponents<PhysicsComponent, ControlComponent>(); }
 void ControlSystem::Update(double deltatime, std::vector<Entity*> entities)
 {
+    // For resets only
+    if (startdelay > 0) {
+        startdelay -= deltatime;
+        return;
+    }
+
     for (Entity* e : entities) {
         auto p = e->GetComponent<PhysicsComponent>();
-        float speed = e->GetComponent<ControlComponent>()->speed;
+        auto c = e->GetComponent<ControlComponent>();
+        float speed = c->speed;
 
         // Set vertical speed, with a small acceleration period
         if (KB.up && !KB.down) {
+            c->active = true;
             p->yvel -= drag*deltatime*speed;
             if (p->yvel < -speed) p->yvel = -speed;
         }
         else if (KB.down && !KB.up) {
+            c->active = true;
             p->yvel += drag*deltatime*speed;
             if (p->yvel > speed) p->yvel = speed;
         }
@@ -46,10 +57,12 @@ void ControlSystem::Update(double deltatime, std::vector<Entity*> entities)
 
         // Set horizontal speed
         if (KB.left && !KB.right) {
+            c->active = true;
             p->xvel -= drag*deltatime*speed;
             if (p->xvel < -speed) p->xvel = -speed;
         }
         else if (KB.right && !KB.left) {
+            c->active = true;
             p->xvel += drag*deltatime*speed;
             if (p->xvel > speed) p->xvel = speed;
         }
@@ -65,6 +78,24 @@ void ControlSystem::Update(double deltatime, std::vector<Entity*> entities)
     }
 }
 
+AISystem::AISystem() { AddComponents<AIComponent, PhysicsComponent, TransformComponent>(); }
+void AISystem::Update(double deltatime, std::vector<Entity*> entities)
+{
+    for (Entity* e : entities) {
+        auto ai = e->GetComponent<AIComponent>();
+        auto pt = ai->player->GetComponent<TransformComponent>();
+        auto tt = e->GetComponent<TransformComponent>();
+        auto phys = e->GetComponent<PhysicsComponent>();
+
+        if (ai->player->GetComponent<ControlComponent>()->active) {
+            if (tt->x > pt->x + pt->w) phys->xvel = -ai->speed;
+            if (tt->x < pt->x - tt->w) phys->xvel = ai->speed;
+            if (tt->y > pt->y + pt->h) phys->yvel = -ai->speed;
+            if (tt->y < pt->y - tt->w) phys->yvel = ai->speed;
+        }
+    }
+}
+
 PhysicsSystem::PhysicsSystem() { AddComponents<TransformComponent, PhysicsComponent>(); }
 void PhysicsSystem::Update(double deltatime, std::vector<Entity*> entities)
 {
@@ -74,20 +105,27 @@ void PhysicsSystem::Update(double deltatime, std::vector<Entity*> entities)
 
         // Apply gravity to moving objects
         if (phys->moving)
-        phys->yvel -= gravity * deltatime;
+            phys->yvel -= gravity * deltatime;
         else continue;
 
         // X axis movement
         trans->x += phys->xvel * deltatime;
         for (Entity* e2 : entities) {
             if (e == e2) continue;
+            if (e->name == "enemy" && e2->name == "enemy") continue;
+            if (e->name == "enemy" && e2->name == "player") continue;
 
             auto trans2 = e2->GetComponent<TransformComponent>();
             if (AABB(e, e2)) {
+                if (e->name == "player" && e2->name == "enemy") {
+                    e2->Destroy();
+                    continue;
+                }
+
                 if (phys->xvel > 0)
-                trans->x = trans2->x - trans->w;
+                    trans->x = trans2->x - trans->w;
                 else if (phys->xvel < 0)
-                trans->x = trans2->x + trans2->w;
+                    trans->x = trans2->x + trans2->w;
                 phys->xvel = 0;
             }
         }
@@ -96,13 +134,20 @@ void PhysicsSystem::Update(double deltatime, std::vector<Entity*> entities)
         trans->y += phys->yvel * deltatime;
         for (Entity* e2 : entities) {
             if (e == e2) continue;
+            if (e->name == "enemy" && e2->name == "enemy") continue;
+            if (e->name == "enemy" && e2->name == "player") continue;
 
             auto trans2 = e2->GetComponent<TransformComponent>();
             if (AABB(e, e2)) {
+                if (e->name == "player" && e2->name == "enemy") {
+                    e2->Destroy();
+                    continue;
+                }
+
                 if (phys->yvel > 0)
-                trans->y = trans2->y - trans->h;
+                    trans->y = trans2->y - trans->h;
                 else if (phys->yvel < 0)
-                trans->y = trans2->y + trans2->h;
+                    trans->y = trans2->y + trans2->h;
                 phys->yvel = 0;
             }
         }
@@ -166,16 +211,18 @@ void CameraSystem::Update(double deltatime, std::vector<Entity*> entities)
 RenderSystem::RenderSystem() { AddComponents<TransformComponent, RenderComponent>(); }
 void RenderSystem::Update(double deltatime, std::vector<Entity*> entities)
 {
-    if (renderer == nullptr)
-        return;
-        
+    // fade
+    if (fadetime > 0) fadetime -= deltatime;
+    if (fadetime < 0) fadetime = 0;
+    int alpha = 255 - fadetime * 255;
+
     for (int i = 0; i < 4; i++)
         for (Entity* e : entities) {
             auto r = e->GetComponent<RenderComponent>();
             if (r->zlayer != i)
                 continue;
             auto t = e->GetComponent<TransformComponent>();
-            SDL_SetRenderDrawColor(renderer, r->r, r->g, r->b, 255);
+            SDL_SetRenderDrawColor(renderer, r->r, r->g, r->b, alpha);
 
             SDL_Rect rect;
             rect.x = (int)Cam.TransformX(t->x);
@@ -185,7 +232,7 @@ void RenderSystem::Update(double deltatime, std::vector<Entity*> entities)
             SDL_RenderFillRect(renderer, &rect);
 
             if (e->name == "player") {
-                SDL_SetRenderDrawColor(renderer, 247, 147, 26, 255);
+                SDL_SetRenderDrawColor(renderer, 247, 147, 26, alpha);
                 SDL_Rect rect;
                 rect.x = (int)Cam.TransformX(t->x+20);
                 rect.y = (int)Cam.TransformY(t->y+20);
