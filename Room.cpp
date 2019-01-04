@@ -102,7 +102,6 @@ void Room::Play()
 		manager->Update((float)timediff/1000);
 		RenderHUD();
 		SDL_RenderPresent(renderer);
-		SDL_SetRenderDrawColor(renderer, bgColor->r, bgColor->g, bgColor->b, 255);
 
 		timediff = SDL_GetTicks() - starttime;
 	}
