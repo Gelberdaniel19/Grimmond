@@ -1,6 +1,7 @@
 # Grimmond
 A roguelite dungeon crawler
 Written in C++ with SDL for graphics
+## [Preview](https://www.youtube.com/watch?v=cm-_3QPJx-o)
 
 ## TODO (Logic)
 - [x] Working entity component system
